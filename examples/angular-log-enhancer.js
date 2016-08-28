@@ -20,15 +20,35 @@
   'use strict';
 
 
-  angular.module('angularLogExtender', [])
+
+
+  var defaultOptions = {
+
+    impactToAllLogs: true,
+
+    showLogsOnlyWith: [],
+
+    supressOnly: [],
+
+    quickStyle: true,
+
+    time: true
+
+  };
+
+
+
+  angular.module('angularLogEnhancer', [])
+    .constant('angularLogEnhancer', defaultOptions)
     .config(config);
 
 
 
-  if (!window.console || !window.console.warn){
-    window.console = {};
-    window.console.warn = function(){
 
+
+  if (!window.console || !window.console.warn) {
+    window.console = {};
+    window.console.warn = function () {
     }
   }
 
@@ -44,7 +64,7 @@
    *
    * @param $provide
    */
-  function config($provide) {
+  function config($provide, angularLogEnhancer) {
 
 
 
@@ -52,13 +72,8 @@
 
 
 
-      var options = {
-        impactToAllLogs: true,
-        showLogsOnlyWith: [],
-        supressOnly: [],
-        quickStyle: true,
-        time: false
-      };
+      var options = angularLogEnhancer;
+
 
 
       var methodsNames = ['log', 'info', 'warn', 'debug', 'error'];
@@ -103,6 +118,7 @@
 
 
 
+
       if (options.impactToAllLogs) {
         methodsNames.forEach(function (v) {
           $delegate[v] = extendLogFn(instant[v]);
@@ -112,6 +128,15 @@
           $delegate[v].setStyle = dummy;
         });
       }
+
+
+
+
+
+      //----------------------------------------------------------------------------------------------------------------
+      // functions
+      //----------------------------------------------------------------------------------------------------------------
+
 
 
 
@@ -158,7 +183,6 @@
 
 
 
-
           /**
            * log styling
            * @type {boolean}
@@ -172,8 +196,7 @@
             hasStyles = true;
             args[0] = args[0].replace(/^\%c/, '');
 
-          } else
-          if (quickStyleApplied) {
+          } else if (quickStyleApplied) {
             //format: @s:18;[c:blue;][w:600;][b:red;]
             var style = unfoldStyle(args[0]);
 
@@ -183,14 +206,12 @@
               args.splice(1, 0, style);
             }
 
-          } else
-          if (styles) {
+          } else if (styles) {
 
             hasStyles = true;
             args.splice(1, 0, styles);
 
-          } else
-          {
+          } else {
             hasStyles = false;
           }
 
@@ -229,9 +250,7 @@
       }
 
 
-      //----------------------------------------------------------------------------------------------------------------
-      // helpers functions
-      //----------------------------------------------------------------------------------------------------------------
+
 
 
       /**
@@ -254,44 +273,40 @@
        *
        * @returns {string|boolean}
        */
-      function unfoldStyle(style){
+      function unfoldStyle(style) {
 
         var stringStyle = '';
         var scw = {
-          size:/s:(\d+)/i,
-          color:/c:([^;\s]+)/i,
-          weight:/w:([^;\s]+)/i,
-          background:/b:([^;\s]+)/i
+          size: /s:(\d+)/i,
+          color: /c:([^;\s]+)/i,
+          weight: /w:([^;\s]+)/i,
+          background: /b:([^;\s]+)/i
         };
 
-        style = style.replace(/\s+/g,'');
+        style = style.replace(/\s+/g, '');
 
         var size = style.match(scw.size);
         var color = style.match(scw.color);
         var weight = style.match(scw.weight);
         var background = style.match(scw.background);
 
-        if(size && size[1]){
-          stringStyle += 'font-size:'+size[1]+'px;';
+        if (size && size[1]) {
+          stringStyle += 'font-size:' + size[1] + 'px;';
         }
 
-        if(color && color[1]){
-          stringStyle += 'color:'+color[1]+';';
+        if (color && color[1]) {
+          stringStyle += 'color:' + color[1] + ';';
         }
 
-        if(weight && weight[1]){
-          stringStyle += 'font-weight:'+weight[1]+';';
+        if (weight && weight[1]) {
+          stringStyle += 'font-weight:' + weight[1] + ';';
         }
 
-        if(background && background[1]){
-          stringStyle += 'background-color:'+background[1]+';';
+        if (background && background[1]) {
+          stringStyle += 'background-color:' + background[1] + ';';
         }
-
-        console.warn(stringStyle);
 
         return stringStyle || false;
-
-
 
       }
 

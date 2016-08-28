@@ -1,1 +1,3 @@
-angular.module('testApp', ['angularLogEnhancer']);
+angular.module('testApp', ['angularLogEnhancer'])
+  .config(function(angularLogEnhancer){
+});

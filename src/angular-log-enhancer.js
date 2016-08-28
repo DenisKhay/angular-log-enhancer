@@ -20,15 +20,35 @@
   'use strict';
 
 
-  angular.module('angularLogExtender', [])
+
+
+  var defaultOptions = {
+
+    impactToAllLogs: true,
+
+    showLogsOnlyWith: [],
+
+    supressOnly: [],
+
+    quickStyle: true,
+
+    time: true
+
+  };
+
+
+
+  angular.module('angularLogEnhancer', [])
+    .constant('angularLogEnhancer', defaultOptions)
     .config(config);
+
+
 
 
 
   if (!window.console || !window.console.warn) {
     window.console = {};
     window.console.warn = function () {
-
     }
   }
 
@@ -44,7 +64,7 @@
    *
    * @param $provide
    */
-  function config($provide) {
+  function config($provide, angularLogEnhancer) {
 
 
 
@@ -52,19 +72,7 @@
 
 
 
-      var options = {
-
-        impactToAllLogs: true,
-
-        showLogsOnlyWith: [],
-
-        supressOnly: [],
-
-        quickStyle: true,
-
-        time: true
-
-      };
+      var options = angularLogEnhancer;
 
 
 
@@ -298,11 +306,7 @@
           stringStyle += 'background-color:' + background[1] + ';';
         }
 
-        console.warn(stringStyle);
-
         return stringStyle || false;
-
-
 
       }
 
