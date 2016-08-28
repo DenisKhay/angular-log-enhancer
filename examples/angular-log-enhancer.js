@@ -56,11 +56,11 @@
 
     that._options = {
 
-      impactToAllLogs: true,
+      affectToAllLogs: true,
 
-      showLogsOnlyWith: [],
+      showOnly: [],
 
-      supressOnly: [],
+      suppressOnly: [],
 
       quickStyle: true,
 
@@ -152,7 +152,7 @@
 
 
 
-      if (options.impactToAllLogs) {
+      if (options.affectToAllLogs) {
         methodsNames.forEach(function (v) {
           $delegate[v] = extendLogFn(instant[v]);
         });
@@ -274,7 +274,7 @@
           styles = style;
         };
 
-        //trick for passing tests when option impactToAllLogs enabled
+        //trick for passing tests when option affectToAllLogs enabled
         logFn.logs = [];
 
 
@@ -373,8 +373,8 @@
        * @description
        * checks permissions for publish the string to browser console
        * permissions defined in 2 arrays:
-       * positive - options.showOnlyWith
-       * negative - options.supressOnly
+       * positive - options.showOnly
+       * negative - options.suppressOnly
        *
        *
        * @param str {String} - target string
@@ -383,12 +383,12 @@
        */
       function isNotSupressed(str) {
 
-        if (options.showLogsOnlyWith.length) {
-          return check(str, options.showLogsOnlyWith);
+        if (options.showOnly.length) {
+          return check(str, options.showOnly);
         }
 
-        if (options.supressOnly.length) {
-          return !check(str, options.supressOnly);
+        if (options.suppressOnly.length) {
+          return !check(str, options.suppressOnly);
         }
 
         return true;
