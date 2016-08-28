@@ -1,0 +1,42 @@
+{
+  "name": "angular-log-extender",
+  "version": "0.0.2",
+  "description": "Extends angular $log module",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DenisKhay/angular-log-enhancer.git"
+  },
+  "keywords": [
+    "log",
+    "console.log",
+    "console",
+    "debug",
+    "angular",
+    "angularjs",
+    "angular-log",
+    "angular-log-extender",
+    "$log-extender",
+    "$log-enhancer",
+    "ng.$log-enhancement",
+    "log-enhancer",
+    "log-extender",
+    "angular-log",
+    "log-improvement",
+    "enhanced-logging",
+    "angular-$log-extender",
+    "angular-log-enhancer"
+  ],
+  "author": "Denis Khaidarshin @madLizard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DenisKhay/angular-log-enhancer/issues"
+  },
+  "homepage": "https://github.com/DenisKhay/angular-log-enhancer#readme"
+}

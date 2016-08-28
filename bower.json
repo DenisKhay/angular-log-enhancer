@@ -1,0 +1,38 @@
+{
+  "name": "angular-log-enhancer",
+  "description": "Extends angular $log module",
+  "main": "dist/angular-log-enhancer.min.js",
+  "version": "0.0.2",
+  "authors": [
+    "Denis Khaidarshin @madLizard"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "log",
+    "console.log",
+    "console",
+    "debug",
+    "angular",
+    "angularjs",
+    "angular-log",
+    "angular-log-extender",
+    "$log-extender",
+    "$log-enhancer",
+    "ng.$log-enhancement",
+    "log-enhancer",
+    "log-extender",
+    "angular-log",
+    "log-improvement",
+    "enhanced-logging",
+    "angular-$log-extender",
+    "angular-log-enhancer"
+  ],
+  "homepage": "https://github.com/DenisKhay/angular-log-enhancer",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
