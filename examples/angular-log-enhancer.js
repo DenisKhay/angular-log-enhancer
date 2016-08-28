@@ -22,24 +22,10 @@
 
 
 
-  var defaultOptions = {
-
-    impactToAllLogs: true,
-
-    showLogsOnlyWith: [],
-
-    supressOnly: [],
-
-    quickStyle: true,
-
-    time: true
-
-  };
-
 
 
   angular.module('angularLogEnhancer', [])
-    .constant('angularLogEnhancer', defaultOptions)
+    .provider('angularLogEnhancer', angularLogEnhancerProvider)
     .config(config);
 
 
@@ -56,6 +42,52 @@
 
 
   /**
+   * @ngdoc function constructor
+   * @name angularLogEnhancerProvider
+   *
+   * @descripton
+   * provides method for setting options from app.config()
+   *
+   * @constructor
+   */
+  function angularLogEnhancerProvider(){
+
+    var that = this;
+
+    that._options = {
+
+      impactToAllLogs: true,
+
+      showLogsOnlyWith: [],
+
+      supressOnly: [],
+
+      quickStyle: true,
+
+      time: true
+
+    };
+
+    that.setOptions = function(opt){
+
+      if(angular.isObject(opt)){
+        angular.extend(this._options, opt)
+      }
+
+    };
+
+    that.$get = function(){
+      return {
+        options:that._options
+      };
+    }
+  }
+
+
+
+
+
+  /**
    * @ngdoc function
    * @name config
    *
@@ -63,9 +95,9 @@
    * please see angular doc
    *
    * @param $provide
-   * @param angularLogEnhancer - just constant that contains options for it
+   * @param angularLogEnhancerProvider
    */
-  function config($provide, angularLogEnhancer) {
+  function config($provide, angularLogEnhancerProvider) {
 
 
 
@@ -73,7 +105,7 @@
 
 
 
-      var options = angularLogEnhancer;
+      var options = angularLogEnhancerProvider._options;
 
 
 

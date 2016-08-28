@@ -1,6 +1,6 @@
 {
   "name": "angular-log-enhancer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Extends angular $log module",
   "main": "index.js",
   "directories": {
