@@ -63,6 +63,7 @@
    * please see angular doc
    *
    * @param $provide
+   * @param angularLogEnhancer - just constant that contains options for it
    */
   function config($provide, angularLogEnhancer) {
 
