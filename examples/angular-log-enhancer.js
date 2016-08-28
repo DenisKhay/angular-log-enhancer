@@ -7,7 +7,7 @@
  * one of the main features of it is the possibility to supress some of $log messages.
  * Next, now possible to sign all logs from some particular module with unique identifier,
  * that can help you very well for simplify debugging.
- * And so on, please see the README and enjoy with angular :) Good Luck Dude :)
+ * For more information please see the README and enjoy with angular :) Good Luck and enjoy your life, Dude :)
  *
  * License: MIT
  */
