@@ -1,7 +1,7 @@
 {
   "name": "angular-log-enhancer",
   "description": "Extends angular $log module",
-  "main": "dist/angular-log-enhancer.min.js",
+  "main": "src/angular-log-enhancer.js",
   "version": "0.0.3",
   "authors": [
     "Denis Khaidarshin @madLizard"
