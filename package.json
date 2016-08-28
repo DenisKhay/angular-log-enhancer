@@ -1,5 +1,5 @@
 {
-  "name": "angular-log-extender",
+  "name": "angular-log-enhancer",
   "version": "0.0.2",
   "description": "Extends angular $log module",
   "main": "index.js",
