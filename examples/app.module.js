@@ -4,5 +4,5 @@ angular.module('testApp', ['angularLogEnhancer'])
     angularLogEnhancerProvider.setOptions({time:false});
 }).run(function(angularLogEnhancer){
   console.log(angularLogEnhancer);
-  angularLogEnhancer.options.impactToAllLogs = false;
+angularLogEnhancer.setOptions({quickStyle: true})
 });
