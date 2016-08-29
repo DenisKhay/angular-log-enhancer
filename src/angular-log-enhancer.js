@@ -70,7 +70,7 @@
 
     };
 
-    that.setOptions =
+    that.setOptions = setOptions;
 
     that.$get = function(){
       return {

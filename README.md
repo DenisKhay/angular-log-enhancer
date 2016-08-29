@@ -48,3 +48,6 @@ app.config(function(angularLogEnhancerProvider){
 
 
 ```
+---
+
+*sorry writing readme is in process
