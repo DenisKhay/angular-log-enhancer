@@ -68,19 +68,23 @@
 
     };
 
-    that.setOptions = function(opt){
-
-      if(angular.isObject(opt)){
-        angular.extend(this._options, opt)
-      }
-
-    };
+    that.setOptions =
 
     that.$get = function(){
       return {
-        options:that._options
+        setOptions:setOptions
       };
+    };
+
+    function setOptions(opt){
+
+      if(angular.isObject(opt)){
+        angular.extend(that._options, opt)
+      }
+
     }
+
+
   }
 
 
