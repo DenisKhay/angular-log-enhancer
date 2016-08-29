@@ -62,9 +62,11 @@
 
       suppressOnly: [],
 
-      quickStyle: true,
+      quickStyle: false,
 
-      time: true
+      quickStyleMark:'@@',
+
+      time: false
 
     };
 
@@ -86,6 +88,7 @@
 
 
 
+  config.$inject = ['$provide','angularLogEnhancerProvider'];
 
   /**
    * @ngdoc function
@@ -189,7 +192,7 @@
       function extendLogFn(loggingFunc, contextMsg) {
 
         var styles = null;
-
+        var quickStyleMark = new RegExp('^'+options.quickStyleMark);
 
         function logFn() {
 
@@ -222,7 +225,7 @@
            */
 
           var hasStyling = /^\%c/.test(args[0]) && typeof args[1] === 'string';
-          var quickStyleApplied = /^@/.test(args[0]) && options.quickStyle;
+          var quickStyleApplied = quickStyleMark.test(args[0]) && options.quickStyle;
 
           if (hasStyling) {
 
@@ -230,7 +233,7 @@
             args[0] = args[0].replace(/^\%c/, '');
 
           } else if (quickStyleApplied) {
-            //format: @s:18;[c:blue;][w:600;][b:red;]
+            //format: @@s:18;[c:blue;][w:600;][b:red;]
             var style = unfoldStyle(args[0]);
 
             if (style) {

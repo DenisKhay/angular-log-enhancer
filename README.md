@@ -18,8 +18,33 @@ npm install angular-log-enhancer
 
 #### Features:
 
-* Hiding/suppression any log messages of our application from browser console using regexp or fragment of message. 
-It is very useful when you have to debug application that have excess logging. With it you may disable some kind of messages for improve readability of your log.
- 
- ---
-*sorry, writing the readme is in process.
+* Hiding/suppression any application log messages from browser console with regexp or using fragments of messages as id
+* Possibility to sign log messages for each of your modules
+* Possibility to set individual css style for group of messages.
+* Using option quickStyle you may quickly set individual css styles for any log message
+
+Please see description for each option below
+
+
+#### How to use:
+
+Connect module to your project and setup in code:
+
+```javascript
+var app = angular.module('your_app', ['angularLogEnhancer'])
+
+app.config(function(angularLogEnhancerProvider){
+
+    angularLogEnhancerProvider.setOptions({
+        affectToAllLogs: true, //default value
+        showOnly: ['http-interceptor', /keychain/i],
+        //or
+        //suppressOnly: [/authori?zation/i, 'queue-manager', 'something-else'],
+        quickStyle: true, //default false
+        time: true //default - false
+        });
+
+})
+
+
+```
