@@ -22,4 +22,4 @@ npm install angular-log-enhancer
 It is very useful when you have to debug application that have excess logging. With it you may disable some kind of messages for improve readability of your log.
  
  ---
-*sorry, writing the readme is in process. To be continued.. Stay Hungry, Stay foolish 
+*sorry, writing the readme is in process. To be continued..
