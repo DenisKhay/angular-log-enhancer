@@ -62,30 +62,37 @@
 
       suppressOnly: [],
 
-      quickStyle: true,
+      quickStyle: false,
 
-      time: true
+      quickStyleMark:'@@',
 
-    };
-
-    that.setOptions = function(opt){
-
-      if(angular.isObject(opt)){
-        angular.extend(this._options, opt)
-      }
+      time: false
 
     };
+
+    that.setOptions = setOptions;
 
     that.$get = function(){
       return {
-        options:that._options
+        setOptions:setOptions
       };
+    };
+
+    function setOptions(opt){
+
+      if(angular.isObject(opt)){
+        angular.extend(that._options, opt)
+      }
+
     }
+
+
   }
 
 
 
 
+  config.$inject = ['$provide','angularLogEnhancerProvider'];
 
   /**
    * @ngdoc function
@@ -189,7 +196,7 @@
       function extendLogFn(loggingFunc, contextMsg) {
 
         var styles = null;
-
+        var quickStyleMark = new RegExp('^'+options.quickStyleMark);
 
         function logFn() {
 
@@ -222,7 +229,7 @@
            */
 
           var hasStyling = /^\%c/.test(args[0]) && typeof args[1] === 'string';
-          var quickStyleApplied = /^@/.test(args[0]) && options.quickStyle;
+          var quickStyleApplied = quickStyleMark.test(args[0]) && options.quickStyle;
 
           if (hasStyling) {
 
@@ -230,7 +237,7 @@
             args[0] = args[0].replace(/^\%c/, '');
 
           } else if (quickStyleApplied) {
-            //format: @s:18;[c:blue;][w:600;][b:red;]
+            //format: @@s:18;[c:blue;][w:600;][b:red;]
             var style = unfoldStyle(args[0]);
 
             if (style) {
