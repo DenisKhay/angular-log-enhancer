@@ -13,12 +13,11 @@
  */
 
 
-;(function (window, document, angular, undefined) {
+(function (window, document, angular, undefined) {
 
 
 
   'use strict';
-
 
 
 
@@ -35,7 +34,7 @@
   if (!window.console || !window.console.warn) {
     window.console = {};
     window.console.warn = function () {
-    }
+    };
   }
 
 
@@ -50,7 +49,7 @@
    *
    * @constructor
    */
-  function angularLogEnhancerProvider(){
+  function angularLogEnhancerProvider() {
 
     var that = this;
 
@@ -64,7 +63,7 @@
 
       quickStyle: false,
 
-      quickStyleMark:'@@',
+      quickStyleMark: '@@',
 
       time: false
 
@@ -72,16 +71,16 @@
 
     that.setOptions = setOptions;
 
-    that.$get = function(){
+    that.$get = function () {
       return {
-        setOptions:setOptions
+        setOptions: setOptions
       };
     };
 
-    function setOptions(opt){
+    function setOptions(opt) {
 
-      if(angular.isObject(opt)){
-        angular.extend(that._options, opt)
+      if (angular.isObject(opt)) {
+        angular.extend(that._options, opt);
       }
 
     }
@@ -92,7 +91,7 @@
 
 
 
-  config.$inject = ['$provide','angularLogEnhancerProvider'];
+  config.$inject = ['$provide', 'angularLogEnhancerProvider'];
 
   /**
    * @ngdoc function
@@ -196,7 +195,7 @@
       function extendLogFn(loggingFunc, contextMsg) {
 
         var styles = null;
-        var quickStyleMark = new RegExp('^'+options.quickStyleMark);
+        var quickStyleMark = new RegExp('^' + options.quickStyleMark);
 
         function logFn() {
 
@@ -228,13 +227,13 @@
            * @type {boolean}
            */
 
-          var hasStyling = /^\%c/.test(args[0]) && typeof args[1] === 'string';
+          var hasStyling = /^%c/.test(args[0]) && typeof args[1] === 'string';
           var quickStyleApplied = quickStyleMark.test(args[0]) && options.quickStyle;
 
           if (hasStyling) {
 
             hasStyles = true;
-            args[0] = args[0].replace(/^\%c/, '');
+            args[0] = args[0].replace(/^%c/, '');
 
           } else if (quickStyleApplied) {
             //format: @@s:18;[c:blue;][w:600;][b:red;]
@@ -423,12 +422,7 @@
 
         while (ln--) {
           var one = arr[ln];
-
-          if (!(one instanceof RegExp)) {
-            one = new RegExp(one);
-          }
-
-          if (one.test(str)) {
+          if (str.match(one)) {
             return true;
           }
         }
