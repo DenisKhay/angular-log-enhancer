@@ -1,7 +1,7 @@
 /**
  * angular 1.4.3
  *
- * created by Denis Khaidarshin denis.khaydarshin@gmail.com
+ * created by Denis Khaidarshin @madlizard
  *
  * it allows to much extend opportunities of logging with angular $log component -
  * one of the main features of it is the possibility to supress some of $log messages.
@@ -165,6 +165,7 @@
       } else {
         methodsNames.forEach(function (v) {
           $delegate[v].setStyle = dummy;
+          $delegate[v].resetStyle = dummy;
         });
       }
 
@@ -280,6 +281,10 @@
           styles = style;
         };
 
+        logFn.resetStyle = function () {
+          styles = '';
+        };
+
         //trick for passing tests when option affectToAllLogs enabled
         logFn.logs = [];
 
@@ -314,20 +319,24 @@
        */
       function unfoldStyle(style) {
 
-        var stringStyle = '';
-        var scw = {
-          size: /s:(\d+)/i,
-          color: /c:([^;\s]+)/i,
-          weight: /w:([^;\s]+)/i,
-          background: /b:([^;\s]+)/i
-        };
+        var stringStyle = '',
+          size,
+          color,
+          weight,
+          background,
+          scw = {
+            size: /s:(\d+)/i,
+            color: /c:([^;\s]+)/i,
+            weight: /w:([^;\s]+)/i,
+            background: /b:([^;\s]+)/i
+          };
 
         style = style.replace(/\s+/g, '');
 
-        var size = style.match(scw.size);
-        var color = style.match(scw.color);
-        var weight = style.match(scw.weight);
-        var background = style.match(scw.background);
+        size = style.match(scw.size);
+        color = style.match(scw.color);
+        weight = style.match(scw.weight);
+        background = style.match(scw.background);
 
         if (size && size[1]) {
           stringStyle += 'font-size:' + size[1] + 'px;';
@@ -418,13 +427,16 @@
        */
       function check(str, arr) {
 
-        var ln = arr.length;
+        var ln = arr.length,
+          one;
 
         while (ln--) {
-          var one = arr[ln];
+          one = arr[ln];
+
           if (str.match(one)) {
             return true;
           }
+
         }
 
         return false;

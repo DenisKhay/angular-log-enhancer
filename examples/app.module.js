@@ -1,8 +1,39 @@
-angular.module('testApp', ['angularLogEnhancer'])
-  .config(function(angularLogEnhancerProvider){
+(function (window, document, angular, undefined) {
+
+  'use strict';
+
+
+
+  var testApplication = angular.module('testApp', ['angularLogEnhancer']);
+
+
+
+  testApplication
+    .config(config)
+    .run(run);
+
+
+
+  config.$inject = ['angularLogEnhancerProvider'];
+  function config(angularLogEnhancerProvider) {
+
     console.log(angularLogEnhancerProvider._options);
-    angularLogEnhancerProvider.setOptions({time:false});
-}).run(function(angularLogEnhancer){
-  console.log(angularLogEnhancer);
-angularLogEnhancer.setOptions({quickStyle: true})
-});
+
+    angularLogEnhancerProvider.setOptions({
+      time: false,
+      suppressOnly: [/change/]
+    });
+
+  }
+
+
+  run.$inject = ['angularLogEnhancer'];
+  function run(angularLogEnhancer) {
+    console.log(angularLogEnhancer);
+    angularLogEnhancer.setOptions({quickStyle: true});
+  }
+
+
+
+})(window, window.document, window.angular);
+
