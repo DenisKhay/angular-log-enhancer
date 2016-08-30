@@ -1,4 +1,6 @@
-(function (angular) {
+(function (window, document, angular, undefined) {
+
+  'use strict';
 
   angular.module('testApp')
     .controller('testCtrl', function ($log, $scope, mservice) {
@@ -12,7 +14,7 @@
       $log.warn('must be red');
 
 
-      $log.debug('@@s:20;c:green;b:black;w:800','hello from all',{a:'mms'});
+      $log.debug('@@s:20;c:green;b:black;w:800', 'hello from all', {a: 'mms'});
 
 
       $log.info('some');
@@ -33,4 +35,5 @@
 
 
 
-})(angular);
+})
+(window, window.document, window.angular);

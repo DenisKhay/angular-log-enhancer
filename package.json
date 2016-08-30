@@ -1,6 +1,6 @@
 {
   "name": "angular-log-enhancer",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Extends angular $log module",
   "main": "index.js",
   "directories": {
@@ -38,5 +38,12 @@
   "bugs": {
     "url": "https://github.com/DenisKhay/angular-log-enhancer/issues"
   },
-  "homepage": "https://github.com/DenisKhay/angular-log-enhancer#readme"
+  "homepage": "https://github.com/DenisKhay/angular-log-enhancer#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-if": "^2.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0"
+  }
 }

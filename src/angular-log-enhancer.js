@@ -1,7 +1,7 @@
 /**
  * angular 1.4.3
  *
- * created by Denis Khaidarshin denis.khaydarshin@gmail.com
+ * created by Denis Khaidarshin @madlizard
  *
  * it allows to much extend opportunities of logging with angular $log component -
  * one of the main features of it is the possibility to supress some of $log messages.
@@ -13,12 +13,11 @@
  */
 
 
-;(function (window, document, angular, undefined) {
+(function (window, document, angular, undefined) {
 
 
 
   'use strict';
-
 
 
 
@@ -35,7 +34,7 @@
   if (!window.console || !window.console.warn) {
     window.console = {};
     window.console.warn = function () {
-    }
+    };
   }
 
 
@@ -50,7 +49,7 @@
    *
    * @constructor
    */
-  function angularLogEnhancerProvider(){
+  function angularLogEnhancerProvider() {
 
     var that = this;
 
@@ -64,7 +63,7 @@
 
       quickStyle: false,
 
-      quickStyleMark:'@@',
+      quickStyleMark: '@@',
 
       time: false
 
@@ -72,16 +71,16 @@
 
     that.setOptions = setOptions;
 
-    that.$get = function(){
+    that.$get = function () {
       return {
-        setOptions:setOptions
+        setOptions: setOptions
       };
     };
 
-    function setOptions(opt){
+    function setOptions(opt) {
 
-      if(angular.isObject(opt)){
-        angular.extend(that._options, opt)
+      if (angular.isObject(opt)) {
+        angular.extend(that._options, opt);
       }
 
     }
@@ -92,7 +91,7 @@
 
 
 
-  config.$inject = ['$provide','angularLogEnhancerProvider'];
+  config.$inject = ['$provide', 'angularLogEnhancerProvider'];
 
   /**
    * @ngdoc function
@@ -166,6 +165,7 @@
       } else {
         methodsNames.forEach(function (v) {
           $delegate[v].setStyle = dummy;
+          $delegate[v].resetStyle = dummy;
         });
       }
 
@@ -196,7 +196,7 @@
       function extendLogFn(loggingFunc, contextMsg) {
 
         var styles = null;
-        var quickStyleMark = new RegExp('^'+options.quickStyleMark);
+        var quickStyleMark = new RegExp('^' + options.quickStyleMark);
 
         function logFn() {
 
@@ -228,13 +228,13 @@
            * @type {boolean}
            */
 
-          var hasStyling = /^\%c/.test(args[0]) && typeof args[1] === 'string';
+          var hasStyling = /^%c/.test(args[0]) && typeof args[1] === 'string';
           var quickStyleApplied = quickStyleMark.test(args[0]) && options.quickStyle;
 
           if (hasStyling) {
 
             hasStyles = true;
-            args[0] = args[0].replace(/^\%c/, '');
+            args[0] = args[0].replace(/^%c/, '');
 
           } else if (quickStyleApplied) {
             //format: @@s:18;[c:blue;][w:600;][b:red;]
@@ -281,6 +281,10 @@
           styles = style;
         };
 
+        logFn.resetStyle = function () {
+          styles = '';
+        };
+
         //trick for passing tests when option affectToAllLogs enabled
         logFn.logs = [];
 
@@ -315,20 +319,24 @@
        */
       function unfoldStyle(style) {
 
-        var stringStyle = '';
-        var scw = {
-          size: /s:(\d+)/i,
-          color: /c:([^;\s]+)/i,
-          weight: /w:([^;\s]+)/i,
-          background: /b:([^;\s]+)/i
-        };
+        var stringStyle = '',
+          size,
+          color,
+          weight,
+          background,
+          scw = {
+            size: /s:(\d+)/i,
+            color: /c:([^;\s]+)/i,
+            weight: /w:([^;\s]+)/i,
+            background: /b:([^;\s]+)/i
+          };
 
         style = style.replace(/\s+/g, '');
 
-        var size = style.match(scw.size);
-        var color = style.match(scw.color);
-        var weight = style.match(scw.weight);
-        var background = style.match(scw.background);
+        size = style.match(scw.size);
+        color = style.match(scw.color);
+        weight = style.match(scw.weight);
+        background = style.match(scw.background);
 
         if (size && size[1]) {
           stringStyle += 'font-size:' + size[1] + 'px;';
@@ -419,18 +427,16 @@
        */
       function check(str, arr) {
 
-        var ln = arr.length;
+        var ln = arr.length,
+          one;
 
         while (ln--) {
-          var one = arr[ln];
+          one = arr[ln];
 
-          if (!(one instanceof RegExp)) {
-            one = new RegExp(one);
-          }
-
-          if (one.test(str)) {
+          if (str.match(one)) {
             return true;
           }
+
         }
 
         return false;
