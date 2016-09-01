@@ -18,8 +18,8 @@ npm install angular-log-enhancer
 
 #### Features:
 
-1. Hiding/suppression any application log messages from browser console with regexp or using fragments of messages as id
-2. Possibility to sign log messages for each of your modules
+1. Possibility to sign log messages for each of your modules
+2. Hiding/suppression any application log messages from browser console with regexp or using fragments of messages as id
 3. Possibility to set individual css style for group of messages.
 4. Using option quickStyle you may quickly set individual css styles for any log message
 
@@ -68,6 +68,36 @@ app.run(function(angularLogEnhancer){
 
 
 #### More about features:
+
+##### 1. Possibility to sign log messages for each of your modules
+
+Just add next code at the top of your module
+
+```javascript
+
+$log = $log.getInstance('db-connector');
+```
+
+and all $log functions will print signed messages from this module like that:
+
+```
+---
+[db-connector]> my debug message
+---
+[db-connector]> my log message
+---
+log without sign from another module
+---
+sync process finished..
+---
+another action logged successfully
+---
+[db-connector]> db connector log message again
+
+```
+
+
+##### 2. Hiding/suppression any application log messages from browser console with regexp or using fragments of messages as id
 
 
 
