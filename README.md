@@ -100,6 +100,24 @@ another action logged successfully
 ##### 2. Hiding/suppression any application log messages from browser console with regexp or using fragments of messages as id
 
 
+Let's suppose that we have next log messages
+
+```
+[db-manager]> db loaded successfully
+[syncronisation]> may be something wrong? I have no params..
+[another-module]> strange message. it is completely not should be here
+[db-manager]> tables successfully created
+! warning - we loaded
+```
+
+For hiding some log messages set arrays for options **showOnly** or **suppressOnly** with desired regexp or text fragments, like that:
+
+```javascript
+angularLogEnhancerProvider.setOption({
+showOnly: ['some-marker', /another-marker/i]
+})
+```
+
 
 
 

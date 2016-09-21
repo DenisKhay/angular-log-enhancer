@@ -16,11 +16,7 @@
 (function (window, document, angular, undefined) {
 
 
-
   'use strict';
-
-
-
 
 
   angular.module('angularLogEnhancer', [])
@@ -56,17 +52,12 @@
     that._options = {
 
       affectToAllLogs: true,
-
       showOnly: [],
-
       suppressOnly: [],
-
       quickStyle: false,
-
       quickStyleMark: '@@',
-
-      time: false
-
+      time: false,
+      stringify: false
     };
 
     that.setOptions = setOptions;
@@ -195,24 +186,16 @@
        */
       function extendLogFn(loggingFunc, contextMsg) {
 
-        var styles = null;
-        var quickStyleMark = new RegExp('^' + options.quickStyleMark);
+        var mainStyle = null;
+
 
         function logFn() {
 
 
-          var time = options.time ? timeLogging() + '::' : '';
+          var time = timeLogging();
           var contextMessage = contextMsg ? '[' + contextMsg + ']> ' : '';
-          var hasStyles = false;
-
-
-
-
 
           var args = Array.prototype.slice.call(arguments, 0);
-
-
-
 
 
           if (typeof args[0] !== 'string') {
@@ -228,31 +211,12 @@
            * @type {boolean}
            */
 
-          var hasStyling = /^%c/.test(args[0]) && typeof args[1] === 'string';
-          var quickStyleApplied = quickStyleMark.test(args[0]) && options.quickStyle;
+          var style = getStyles(args);
 
-          if (hasStyling) {
-
-            hasStyles = true;
-            args[0] = args[0].replace(/^%c/, '');
-
-          } else if (quickStyleApplied) {
-            //format: @@s:18;[c:blue;][w:600;][b:red;]
-            var style = unfoldStyle(args[0]);
-
-            if (style) {
-              hasStyles = true;
-              args.splice(0, 1);
-              args.splice(1, 0, style);
-            }
-
-          } else if (styles) {
-
-            hasStyles = true;
-            args.splice(1, 0, styles);
-
-          } else {
-            hasStyles = false;
+          if (style) {
+            args = cleanStyles(args);
+          } else if (mainStyle) {
+            style = mainStyle;
           }
 
 
@@ -262,11 +226,21 @@
            * final assembling first argument of the log function
            * @type {string}
            */
-          args[0] = (hasStyles ? '%c' : '') + ('---\n' + time + contextMessage) + args[0];
-
+          args[0] = (time ? time + '::' : '') + contextMessage + args[0];
 
 
           if (isNotSupressed(args[0])) {
+
+            if (options.stringify) {
+              args = [stringify(args)];
+            } else
+            if (style) {
+
+              args[0] = '%c' + args[0];
+              args.splice(1, 0, style);
+
+            }
+            args[0] = '---------------\n' + args[0];
             loggingFunc.apply(null, args);
           }
 
@@ -278,11 +252,11 @@
 
 
         logFn.setStyle = function (style) {
-          styles = style;
+          mainStyle = style;
         };
 
         logFn.resetStyle = function () {
-          styles = '';
+          mainStyle = '';
         };
 
         //trick for passing tests when option affectToAllLogs enabled
@@ -295,7 +269,66 @@
 
 
 
+      function stringify(arr) {
 
+        return arr.reduce(function (prev, next, i, arr) {
+
+          var last = (arr.length - 1) === i;
+
+          return prev + JSON.stringify(next, function (key, value) {
+              if (typeof value === 'function') {
+                return value + '';
+              }
+              return value;
+            }, 2) + (last ? '' : '\n---\n');
+        }, '');
+
+
+      }
+
+      function cleanStyles(args) {
+        var arg = args.slice();
+
+        var quickStyleMark = new RegExp('^' + options.quickStyleMark);
+        var quickStyle = quickStyleMark.test(args[0]) && options.quickStyle;
+
+        if (/^%c/.test(arg[0])) {
+          arg[0] = arg[0].replace(/^\s?%c/, '');
+          arg.splice(1, 1);
+        }
+
+        if (quickStyle) {
+          arg.splice(0, 1);
+        }
+
+        return arg;
+      }
+
+      function getStyles(arg) {
+
+        var args = arg.slice();
+
+        var quickStyleMark = new RegExp('^' + options.quickStyleMark);
+        var hasStyling = /^%c/.test(args[0]) && typeof args[1] === 'string';
+        var quickStyleApplied = quickStyleMark.test(args[0]) && options.quickStyle;
+
+        if (hasStyling) {
+
+
+          args[0] = args[0].replace(/^%c/, '');
+          return args[1];
+
+        } else if (quickStyleApplied) {
+          //format: @@s:18;[c:blue;][w:600;][b:red;]
+          var style = unfoldStyle(args[0]);
+
+          return style || null;
+
+        }
+
+        return null;
+
+      }
 
       /**
        *
@@ -433,7 +466,11 @@
         while (ln--) {
           one = arr[ln];
 
-          if (str.match(one)) {
+          if (!(one instanceof RegExp)) {
+            one = new RegExp(one.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+          }
+
+          if (one.test(str)) {
             return true;
           }
 
@@ -509,6 +546,9 @@
        * @returns {string}
        */
       function timeLogging() {
+        if (!options.time) {
+          return '';
+        }
 
         var dateTime = new Date(),
 

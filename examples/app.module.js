@@ -21,7 +21,7 @@
 
     angularLogEnhancerProvider.setOptions({
       time: false,
-      suppressOnly: [/change/]
+      suppressOnly: ['[hello from mserv]']
     });
 
   }
