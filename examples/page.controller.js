@@ -14,7 +14,7 @@
       $log.warn('must be red');
 
 
-      $log.debug('@@s:20;c:green;b:black;w:800', 'hello from all', {a: 'mms'});
+      $log.debug('@@s:20;c:green;b:black;w:800', 'hello from all', {a: 'mms'}, function(){return 'something'});
 
 
       $log.info('some');
